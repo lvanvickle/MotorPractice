@@ -1,2 +1,2 @@
-./rover_venv/
-./__pycache__/
+rover_venv/
+__pycache__/
