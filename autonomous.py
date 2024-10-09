@@ -35,7 +35,7 @@ def start_autonomy(get_mode):
         if distance is not None and distance < 20:  # If obstacle is closer than 20 cm
             print(f"Obstacle detected at {distance} cm. Stopping and backing up.")
             stop_motors()
-            time.sleep(1)
+            time.sleep(0.01)
             move_backward(0.3)
             time.sleep(1)
             stop_motors()
@@ -54,6 +54,6 @@ def start_autonomy(get_mode):
         print(f"Closest obstacle {distance} cm away.")
         print("Moving forward.")
         move_forward(0.5)
-        time.sleep(0.5)  # Move forward for a short time before checking again
+        time.sleep(0.01)  # Move forward for a short time before checking again
 
     stop_motors()  # Ensure motors are stopped if mode changes
