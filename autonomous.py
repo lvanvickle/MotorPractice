@@ -36,24 +36,24 @@ def start_autonomy(get_mode):
             print(f"Obstacle detected at {distance} cm. Stopping and backing up.")
             stop_motors()
             time.sleep(0.01)
-            move_backward(0.3)
+            move_backward(0.5)
             time.sleep(1)
             stop_motors()
             
             # Randomly turn left or right
             if random.choice([True, False]):
                 print("Turning left to avoid obstacle.")
-                turn_left(0.3)
+                turn_left(0.5)
             else:
                 print("Turning right to avoid obstacle.")
-                turn_right(0.3)
+                turn_right(0.5)
             time.sleep(1)
             stop_motors()
 
         # Move forward if no obstacle
         print(f"Closest obstacle {distance} cm away.")
         print("Moving forward.")
-        move_forward(0.5)
+        move_forward(1)
         time.sleep(0.01)  # Move forward for a short time before checking again
 
     stop_motors()  # Ensure motors are stopped if mode changes
