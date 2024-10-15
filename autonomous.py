@@ -32,7 +32,7 @@ def start_autonomy(get_mode):
     while get_mode() == "autonomous":
         distance = read_distance()
 
-        if distance is not None and distance < 20:
+        if distance is not None and distance < 20:  # Ensure distance is not None before comparison
             print(f"Obstacle detected at {distance} cm. Stopping and backing up.")
             stop_motors()
 
@@ -41,7 +41,7 @@ def start_autonomy(get_mode):
             while time.time() - start_time < 1:  # Moving backward for 1 second
                 move_backward(0.3)
                 distance = read_distance()
-                if distance > 20:  # Stop if the obstacle is cleared
+                if distance is not None and distance > 20:  # Check if distance is valid
                     break
             stop_motors()
 
@@ -52,7 +52,7 @@ def start_autonomy(get_mode):
                 while time.time() - start_time < 1:
                     turn_left(0.3)
                     distance = read_distance()
-                    if distance > 20:  # Stop turning if no obstacle
+                    if distance is not None and distance > 20:  # Check if distance is valid
                         break
             else:
                 print("Turning right to avoid obstacle.")
@@ -60,11 +60,11 @@ def start_autonomy(get_mode):
                 while time.time() - start_time < 1:
                     turn_right(0.3)
                     distance = read_distance()
-                    if distance > 20:
+                    if distance is not None and distance > 20:  # Check if distance is valid
                         break
             stop_motors()
 
-        else:
+        elif distance is not None:  # Continue forward if there's no close obstacle
             print(f"Closest obstacle {distance} cm away. Moving forward.")
             move_forward(0.5)
 
@@ -72,6 +72,7 @@ def start_autonomy(get_mode):
             start_time = time.time()
             while time.time() - start_time < 0.5:  # Move for 0.5 seconds, but check often
                 distance = read_distance()
-                if distance < 20:
+                if distance is not None and distance < 20:  # Check if distance is valid
                     break  # Immediately stop if an obstacle is detected
             stop_motors()
+
