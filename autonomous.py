@@ -55,7 +55,7 @@ def start_autonomy(get_mode):
                 # Move backward for 1 second, continuously checking the distance to avoid obstacles
                 start_time = time.time()  # Record the current time
                 while time.time() - start_time < 1:  # Keep moving backward for 1 second
-                    move_backward(0.5)  # Move backward at 30% speed
+                    move_backward(0.5)  # Move backward at 50% speed
                     distance = read_distance()  # Read the distance again while moving
                     if distance is not None and distance > 20:  # If the path is clear
                         break  # Stop moving backward
@@ -66,7 +66,7 @@ def start_autonomy(get_mode):
                     print("Turning left to avoid obstacle.")
                     start_time = time.time()
                     while time.time() - start_time < 1:  # Turn left for 1 second
-                        turn_left(0.5)  # Turn left at 30% speed
+                        turn_left(0.5)  # Turn left at 50% speed
                         distance = read_distance()  # Check if the path is clear while turning
                         if distance is not None and distance > 20:  # If no obstacles ahead
                             break  # Stop turning
@@ -74,7 +74,7 @@ def start_autonomy(get_mode):
                     print("Turning right to avoid obstacle.")
                     start_time = time.time()
                     while time.time() - start_time < 1:  # Turn right for 1 second
-                        turn_right(0.5)  # Turn right at 30% speed
+                        turn_right(0.5)  # Turn right at 50% speed
                         distance = read_distance()  # Check if the path is clear while turning
                         if distance is not None and distance > 20:  # If no obstacles ahead
                             break  # Stop turning
@@ -83,7 +83,7 @@ def start_autonomy(get_mode):
             # If there are no close obstacles (or distance data is valid)
             elif distance is not None:
                 print(f"Closest obstacle {distance} cm away. Moving forward.")
-                move_forward(1)  # Move forward at 50% speed
+                move_forward(1)  # Move forward at full speed
     
                 # Keep checking the distance while moving forward
                 start_time = time.time()
