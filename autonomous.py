@@ -40,56 +40,62 @@ def read_distance():
 # This function handles the robot's autonomous movement behavior
 # It will keep moving and reacting to obstacles as long as the mode is set to 'autonomous'
 def start_autonomy(get_mode):
-    # Continue the loop while the mode is set to "autonomous"
-    while get_mode() == "autonomous":
-        # Get the current distance from the read_distance function
-        distance = read_distance()
-
-        # If the distance is valid (not None) and an obstacle is closer than 20 cm
-        if distance is not None and distance < 20:
-            print(f"Obstacle detected at {distance} cm. Stopping and backing up.")
-            stop_motors()  # Stop the robot immediately
-
-            # Move backward for 1 second, continuously checking the distance to avoid obstacles
-            start_time = time.time()  # Record the current time
-            while time.time() - start_time < 1:  # Keep moving backward for 1 second
-                move_backward(0.5)  # Move backward at 30% speed
-                distance = read_distance()  # Read the distance again while moving
-                if distance is not None and distance > 20:  # If the path is clear
-                    break  # Stop moving backward
-            stop_motors()  # Stop the motors after moving backward
-
-            # Randomly decide whether to turn left or right to avoid the obstacle
-            if random.choice([True, False]):  # Randomly choose True (left) or False (right)
-                print("Turning left to avoid obstacle.")
+    try:
+        # Continue the loop while the mode is set to "autonomous"
+        while get_mode() == "autonomous":
+            # Get the current distance from the read_distance function
+            distance = read_distance()
+    
+            # If the distance is valid (not None) and an obstacle is closer than 20 cm
+            if distance is not None and distance < 20:
+                print(f"Obstacle detected at {distance} cm. Stopping and backing up.")
+                stop_motors()  # Stop the robot immediately
+    
+                # Move backward for 1 second, continuously checking the distance to avoid obstacles
+                start_time = time.time()  # Record the current time
+                while time.time() - start_time < 1:  # Keep moving backward for 1 second
+                    move_backward(0.5)  # Move backward at 30% speed
+                    distance = read_distance()  # Read the distance again while moving
+                    if distance is not None and distance > 20:  # If the path is clear
+                        break  # Stop moving backward
+                stop_motors()  # Stop the motors after moving backward
+    
+                # Randomly decide whether to turn left or right to avoid the obstacle
+                if random.choice([True, False]):  # Randomly choose True (left) or False (right)
+                    print("Turning left to avoid obstacle.")
+                    start_time = time.time()
+                    while time.time() - start_time < 1:  # Turn left for 1 second
+                        turn_left(0.5)  # Turn left at 30% speed
+                        distance = read_distance()  # Check if the path is clear while turning
+                        if distance is not None and distance > 20:  # If no obstacles ahead
+                            break  # Stop turning
+                else:
+                    print("Turning right to avoid obstacle.")
+                    start_time = time.time()
+                    while time.time() - start_time < 1:  # Turn right for 1 second
+                        turn_right(0.5)  # Turn right at 30% speed
+                        distance = read_distance()  # Check if the path is clear while turning
+                        if distance is not None and distance > 20:  # If no obstacles ahead
+                            break  # Stop turning
+                stop_motors()  # Stop the motors after turning
+    
+            # If there are no close obstacles (or distance data is valid)
+            elif distance is not None:
+                print(f"Closest obstacle {distance} cm away. Moving forward.")
+                move_forward(1)  # Move forward at 50% speed
+    
+                # Keep checking the distance while moving forward
                 start_time = time.time()
-                while time.time() - start_time < 1:  # Turn left for 1 second
-                    turn_left(0.5)  # Turn left at 30% speed
-                    distance = read_distance()  # Check if the path is clear while turning
-                    if distance is not None and distance > 20:  # If no obstacles ahead
-                        break  # Stop turning
-            else:
-                print("Turning right to avoid obstacle.")
-                start_time = time.time()
-                while time.time() - start_time < 1:  # Turn right for 1 second
-                    turn_right(0.5)  # Turn right at 30% speed
-                    distance = read_distance()  # Check if the path is clear while turning
-                    if distance is not None and distance > 20:  # If no obstacles ahead
-                        break  # Stop turning
-            stop_motors()  # Stop the motors after turning
-
-        # If there are no close obstacles (or distance data is valid)
-        elif distance is not None:
-            print(f"Closest obstacle {distance} cm away. Moving forward.")
-            move_forward(1)  # Move forward at 50% speed
-
-            # Keep checking the distance while moving forward
-            start_time = time.time()
-            while time.time() - start_time < 0.5:  # Move for 0.5 seconds
-                distance = read_distance()  # Check if there's a new obstacle
-                if distance is not None and distance < 20:  # If a new obstacle is detected
-                    break  # Stop moving forward immediately
-            stop_motors()  # Stop the motors after moving forward
+                while time.time() - start_time < 0.5:  # Move for 0.5 seconds
+                    distance = read_distance()  # Check if there's a new obstacle
+                    if distance is not None and distance < 20:  # If a new obstacle is detected
+                        break  # Stop moving forward immediately
+                stop_motors()  # Stop the motors after moving forward
+    except KeyboardInterrupt:
+        # Handle keyboard interrupt (Ctrl + C)
+        print("\nKeyboard interrupt detected. Stopping motors and exiting.")
+        stop_motors()  # Safely stop the motors
+        sys.exit(0)  # Exit the program
 
 # Main function that sets up and starts the robot in autonomous mode
 def main():
