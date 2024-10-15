@@ -2,6 +2,7 @@
 import serial  # Provides communication between the Raspberry Pi and Arduino via USB
 import random  # Allows us to generate random choices for turning left or right
 import time  # Gives us the ability to add delays (pauses) in the code
+import sys  # Allows us to safely exit the script
 
 # Importing custom motor functions to control the robot's movement
 from motor_func import move_forward, move_backward, turn_left, turn_right, stop_motors
