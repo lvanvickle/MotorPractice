@@ -90,3 +90,19 @@ def start_autonomy(get_mode):
                 if distance is not None and distance < 20:  # If a new obstacle is detected
                     break  # Stop moving forward immediately
             stop_motors()  # Stop the motors after moving forward
+
+# Main function that sets up and starts the robot in autonomous mode
+def main():
+    # Set up the serial connection
+    setup_serial()
+
+    # Placeholder for mode control (example function that could be used to switch modes)
+    def get_mode():
+        return "autonomous"
+
+    # Start the autonomous behavior
+    start_autonomy(get_mode)
+
+# This ensures that the script will run if executed directly but won't run if imported as a module
+if __name__ == "__main__":
+    main()
